@@ -1,0 +1,27 @@
+{
+  "name": "cosmatics-erp-pos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-branch Cosmetics Trading ERP & POS Platform",
+  "scripts": {
+    "install:all": "pnpm install",
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "db:migrate": "pnpm --filter backend db:migrate",
+    "db:seed": "pnpm --filter backend db:seed",
+    "db:studio": "pnpm --filter backend db:studio",
+    "db:reset": "pnpm --filter backend db:reset"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.4.0"
+}
