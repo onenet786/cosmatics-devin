@@ -887,6 +887,7 @@ model SalesOrder {
   invoices    SalesInvoice[]
   lines       SalesOrderLine[]
 
+  @@unique([tenantId, branchId, number])
   @@map("sales_orders")
 }
 
@@ -944,6 +945,7 @@ model SalesInvoice {
   deliveryNotes DeliveryNote[]
   salesReturns  SalesReturn[]
 
+  @@unique([tenantId, branchId, fiscalYearId, number])
   @@map("sales_invoices")
 }
 

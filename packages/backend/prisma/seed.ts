@@ -356,6 +356,30 @@ async function main() {
     },
   });
 
+  // Purchase order line
+  const poLine = await prisma.purchaseOrderLine.upsert({
+    where: { id: 'po-line-1' },
+    update: {},
+    create: {
+      id: 'po-line-1',
+      orderId: po.id,
+      itemId: item1.id,
+      variantId: variant1.id,
+      uomId: carton.id,
+      quantity: 144,
+      quantityBase: 144,
+      unitPrice: 500,
+      total: 72000,
+    },
+  });
+
+  // Batch (moved before GRN line)
+  const batch = await prisma.batch.upsert({
+    where: { tenantId_itemId_variantId_warehouseId_batchNo: { tenantId, itemId: item1.id, variantId: variant1.id, warehouseId: mainWarehouse.id, batchNo: 'BATCH-001' } },
+    update: {},
+    create: { tenantId, itemId: item1.id, variantId: variant1.id, warehouseId: mainWarehouse.id, batchNo: 'BATCH-001', expiryDate: new Date('2028-06-30'), quantity: 144, costPrice: 500 },
+  });
+
   // GRN
   const grn = await prisma.goodsReceivedNote.upsert({
     where: { tenantId_branchId_fiscalYearId_number: { tenantId, branchId: mainBranch.id, fiscalYearId: fiscalYear.id, number: 'GRN-0001' } },
@@ -374,7 +398,7 @@ async function main() {
   await prisma.goodsReceivedNoteLine.upsert({
     where: { id: 'grn-line-1' },
     update: {},
-    create: { grnId: grn.id, poLineId: 'po-line-1', itemId: item1.id, variantId: variant1.id, batchId: 'batch-1', uomId: piece.id, quantity: 144, quantityBase: 144, unitPrice: 500, total: 72000 },
+    create: { grnId: grn.id, poLineId: poLine.id, itemId: item1.id, variantId: variant1.id, batchId: batch.id, uomId: piece.id, quantity: 144, quantityBase: 144, unitPrice: 500, total: 72000 },
   });
 
   // Purchase invoice
@@ -418,13 +442,6 @@ async function main() {
       runningQty: 144,
       runningValue: 72000,
     },
-  });
-
-  // Batch
-  await prisma.batch.upsert({
-    where: { tenantId_itemId_variantId_warehouseId_batchNo: { tenantId, itemId: item1.id, variantId: variant1.id, warehouseId: mainWarehouse.id, batchNo: 'BATCH-001' } },
-    update: {},
-    create: { tenantId, itemId: item1.id, variantId: variant1.id, warehouseId: mainWarehouse.id, batchNo: 'BATCH-001', expiryDate: new Date('2028-06-30'), quantity: 144, costPrice: 500 },
   });
 
   // Sales order
