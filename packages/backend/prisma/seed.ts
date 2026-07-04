@@ -135,58 +135,57 @@ async function main() {
   });
 
   // Chart of accounts
-  const coa = {
-    assets: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '1000' } },
-      update: {},
-      create: { tenantId, code: '1000', name: 'Assets', level: 1, type: 'ASSET' },
-    }),
-    cash: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '1100' } },
-      update: {},
-      create: { tenantId, code: '1100', name: 'Cash & Bank', level: 2, type: 'ASSET', parentId: '1000' },
-    }),
-    cashControl: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '1110' } },
-      update: {},
-      create: { tenantId: tenantId, code: '1110', name: 'Cash Control', level: 4, type: 'ASSET', parentId: '1100', isControl: true, isCash: true },
-    }),
-    inventory: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '1200' } },
-      update: {},
-      create: { tenantId, code: '1200', name: 'Inventory Control', level: 4, type: 'ASSET', parentId: '1000', isControl: true },
-    }),
-    ar: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '1300' } },
-      update: {},
-      create: { tenantId, code: '1300', name: 'Accounts Receivable', level: 4, type: 'ASSET', parentId: '1000', isControl: true },
-    }),
-    liabilities: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '2000' } },
-      update: {},
-      create: { tenantId, code: '2000', name: 'Liabilities', level: 1, type: 'LIABILITY' },
-    }),
-    ap: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '2100' } },
-      update: {},
-      create: { tenantId, code: '2100', name: 'Accounts Payable', level: 4, type: 'LIABILITY', parentId: '2000', isControl: true },
-    }),
-    revenue: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '4000' } },
-      update: {},
-      create: { tenantId, code: '4000', name: 'Revenue', level: 1, type: 'REVENUE' },
-    }),
-    sales: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '4100' } },
-      update: {},
-      create: { tenantId, code: '4100', name: 'Sales Revenue', level: 4, type: 'REVENUE', parentId: '4000' },
-    }),
-    cogs: await prisma.chartOfAccount.upsert({
-      where: { tenantId_code: { tenantId, code: '5000' } },
-      update: {},
-      create: { tenantId, code: '5000', name: 'Cost of Goods Sold', level: 4, type: 'EXPENSE', parentId: '4000' },
-    }),
-  };
+  const coa: any = {};
+  coa.assets = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '1000' } },
+    update: {},
+    create: { tenantId, code: '1000', name: 'Assets', level: 1, type: 'ASSET' },
+  });
+  coa.liabilities = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '2000' } },
+    update: {},
+    create: { tenantId, code: '2000', name: 'Liabilities', level: 1, type: 'LIABILITY' },
+  });
+  coa.revenue = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '4000' } },
+    update: {},
+    create: { tenantId, code: '4000', name: 'Revenue', level: 1, type: 'REVENUE' },
+  });
+  coa.cash = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '1100' } },
+    update: {},
+    create: { tenantId, code: '1100', name: 'Cash & Bank', level: 2, type: 'ASSET', parentId: coa.assets.id },
+  });
+  coa.cashControl = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '1110' } },
+    update: {},
+    create: { tenantId: tenantId, code: '1110', name: 'Cash Control', level: 4, type: 'ASSET', parentId: coa.cash.id, isControl: true, isCash: true },
+  });
+  coa.inventory = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '1200' } },
+    update: {},
+    create: { tenantId, code: '1200', name: 'Inventory Control', level: 4, type: 'ASSET', parentId: coa.assets.id, isControl: true },
+  });
+  coa.ar = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '1300' } },
+    update: {},
+    create: { tenantId, code: '1300', name: 'Accounts Receivable', level: 4, type: 'ASSET', parentId: coa.assets.id, isControl: true },
+  });
+  coa.ap = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '2100' } },
+    update: {},
+    create: { tenantId, code: '2100', name: 'Accounts Payable', level: 4, type: 'LIABILITY', parentId: coa.liabilities.id, isControl: true },
+  });
+  coa.sales = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '4100' } },
+    update: {},
+    create: { tenantId, code: '4100', name: 'Sales Revenue', level: 4, type: 'REVENUE', parentId: coa.revenue.id },
+  });
+  coa.cogs = await prisma.chartOfAccount.upsert({
+    where: { tenantId_code: { tenantId, code: '5000' } },
+    update: {},
+    create: { tenantId, code: '5000', name: 'Cost of Goods Sold', level: 4, type: 'EXPENSE', parentId: coa.revenue.id },
+  });
 
   // Update cash account GL reference
   await prisma.cashAccount.update({ where: { id: mainCash.id }, data: { glAccountId: coa.cashControl.id } });
