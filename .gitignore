@@ -35,3 +35,12 @@ coverage/
 
 # Prisma
 packages/backend/prisma/migrations/*/migration_lock.toml
+
+# AAPanel / hosting artifacts
+.htaccess
+.user.ini
+.well-known/
+404.html
+502.html
+index.html
+package-lock.json
