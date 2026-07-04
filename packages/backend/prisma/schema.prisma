@@ -732,6 +732,7 @@ model GoodsReceivedNote {
   lines       GoodsReceivedNoteLine[]
   purchaseInvoices PurchaseInvoice[]
 
+  @@unique([tenantId, branchId, fiscalYearId, number])
   @@map("goods_received_notes")
 }
 
@@ -781,6 +782,7 @@ model PurchaseInvoice {
 
   grn         GoodsReceivedNote @relation(fields: [grnId], references: [id])
 
+  @@unique([tenantId, branchId, fiscalYearId, number])
   @@map("purchase_invoices")
 }
 
@@ -1056,6 +1058,7 @@ model PriceList {
   items       PriceListItem[]
   parties     Party[]
 
+  @@unique([tenantId, name])
   @@map("price_lists")
 }
 
@@ -1363,6 +1366,7 @@ model TaxCategory {
   province    String?
   isActive    Boolean  @default(true) @map("is_active")
 
+  @@unique([tenantId, name])
   @@map("tax_categories")
 }
 
@@ -1376,6 +1380,7 @@ model ItemCategory {
   parent      ItemCategory? @relation("CategoryHierarchy", fields: [parentId], references: [id])
   children    ItemCategory[] @relation("CategoryHierarchy")
 
+  @@unique([tenantId, name])
   @@map("item_categories")
 }
 
@@ -1385,6 +1390,7 @@ model Brand {
   name        String
   isActive    Boolean  @default(true) @map("is_active")
 
+  @@unique([tenantId, name])
   @@map("brands")
 }
 
