@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -293,6 +293,7 @@ model CashAccount {
   id          String   @id @default(uuid())
   tenantId    String   @map("tenant_id")
   branchId    String   @map("branch_id")
+  code        String
   name        String
   accountType CashAccountType @map("account_type")
   glAccountId String   @map("gl_account_id")
@@ -303,6 +304,7 @@ model CashAccount {
   branch      Branch   @relation(fields: [branchId], references: [id])
   posSessions PosSession[]
 
+  @@unique([branchId, code])
   @@map("cash_accounts")
 }
 
