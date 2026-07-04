@@ -710,6 +710,8 @@ model PurchaseOrderLine {
   total       Decimal  @db.Decimal(18, 4)
 
   order       PurchaseOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item        Item @relation(fields: [itemId], references: [id])
+  uom         UnitOfMeasure @relation(fields: [uomId], references: [id])
 
   @@map("purchase_order_lines")
 }
@@ -914,6 +916,8 @@ model SalesOrderLine {
   total       Decimal  @db.Decimal(18, 4)
 
   order       SalesOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item        Item @relation(fields: [itemId], references: [id])
+  uom         UnitOfMeasure @relation(fields: [uomId], references: [id])
 
   @@map("sales_order_lines")
 }
@@ -973,6 +977,8 @@ model SalesInvoiceLine {
   costPrice   Decimal  @map("cost_price") @db.Decimal(18, 4)
 
   invoice     SalesInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  item        Item @relation(fields: [itemId], references: [id])
+  uom         UnitOfMeasure @relation(fields: [uomId], references: [id])
 
   @@map("sales_invoice_lines")
 }
@@ -1075,6 +1081,7 @@ model PriceListItem {
 
   priceList   PriceList @relation(fields: [priceListId], references: [id], onDelete: Cascade)
   item        Item @relation(fields: [itemId], references: [id])
+  uom         UnitOfMeasure @relation(fields: [uomId], references: [id])
 
   @@map("price_list_items")
 }
@@ -1231,6 +1238,8 @@ model PosTransactionLine {
   total       Decimal  @db.Decimal(18, 4)
 
   transaction PosTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  item        Item @relation(fields: [itemId], references: [id])
+  uom         UnitOfMeasure @relation(fields: [uomId], references: [id])
 
   @@map("pos_transaction_lines")
 }
