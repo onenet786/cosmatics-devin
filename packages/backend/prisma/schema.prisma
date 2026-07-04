@@ -445,6 +445,11 @@ model UnitOfMeasure {
   itemsSales      Item[] @relation("ItemSalesUnit")
   itemsReporting  Item[] @relation("ItemReportingUnit")
   barcodes        Barcode[]
+  purchaseOrderLines PurchaseOrderLine[]
+  salesOrderLines SalesOrderLine[]
+  salesInvoiceLines SalesInvoiceLine[]
+  posTransactionLines PosTransactionLine[]
+  priceListItems  PriceListItem[]
 
   @@unique([tenantId, name])
   @@map("units_of_measure")
@@ -480,6 +485,10 @@ model Item {
   priceListItems  PriceListItem[]
   stockLedger     StockLedgerEntry[]
   batches         Batch[]
+  purchaseOrderLines PurchaseOrderLine[]
+  salesOrderLines SalesOrderLine[]
+  salesInvoiceLines SalesInvoiceLine[]
+  posTransactionLines PosTransactionLine[]
 
   @@unique([tenantId, code])
   @@map("items")
