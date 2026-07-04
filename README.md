@@ -71,7 +71,7 @@ A multi-branch, SaaS-native ERP and Point-of-Sale platform designed for cosmetic
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-org/cosmatics-devin.git
+git clone https://github.com/onenet786/cosmatics-devin.git
 cd cosmatics-devin
 ```
 
